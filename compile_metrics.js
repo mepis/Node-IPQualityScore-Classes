@@ -1,12 +1,4 @@
-class response_messages {
-  constructor() {}
-  error(message) {
-    return { success: false, message: message };
-  }
-  success(message, data) {
-    return { success: true, message: message, data: data };
-  }
-}
+const indicators = require("./data/reports_indicators");
 
 var IP_REPORT;
 /* eslint-disable */
@@ -102,6 +94,7 @@ const DEVICE_CONNECTION_TYPES = [
 ];
 
 let data;
+
 async function compile_metrics() {
   return new Promise(async (resolve) => {
     // common data
@@ -997,49 +990,48 @@ async function compile_metrics() {
 }
 
 function get_index(object_array, entry) {
-    return new Promise(async (resolve) => {
-      if (object_array === null) {
+  return new Promise(async (resolve) => {
+    if (object_array === null) {
+      resolve(-1);
+    }
+    for (let line = 0; line < object_array.length; line++) {
+      if (object_array[line].os && object_array[line].os === entry) {
+        object_array = null;
+        resolve(line);
+        break;
+      } else if (
+        object_array[line].country &&
+        object_array[line].country === entry
+      ) {
+        object_array = null;
+        resolve(line);
+        break;
+      } else if (
+        object_array[line].browser &&
+        object_array[line].browser === entry
+      ) {
+        object_array = null;
+        resolve(line);
+        break;
+      } else if (
+        object_array[line].fraud_reason &&
+        object_array[line].fraud_reason === entry
+      ) {
+        object_array = null;
+        resolve(line);
+        break;
+      } else if (
+        object_array[line].model &&
+        object_array[line].model.model === entry
+      ) {
+        object_array = null;
+        resolve(line);
+        break;
+      } else if (object_array === null || line === object_array.length - 1) {
+        object_array = null;
         resolve(-1);
+        break;
       }
-      for (let line = 0; line < object_array.length; line++) {
-        if (object_array[line].os && object_array[line].os === entry) {
-          object_array = null;
-          resolve(line);
-          break;
-        } else if (
-          object_array[line].country &&
-          object_array[line].country === entry
-        ) {
-          object_array = null;
-          resolve(line);
-          break;
-        } else if (
-          object_array[line].browser &&
-          object_array[line].browser === entry
-        ) {
-          object_array = null;
-          resolve(line);
-          break;
-        } else if (
-          object_array[line].fraud_reason &&
-          object_array[line].fraud_reason === entry
-        ) {
-          object_array = null;
-          resolve(line);
-          break;
-        } else if (
-          object_array[line].model &&
-          object_array[line].model.model === entry
-        ) {
-          object_array = null;
-          resolve(line);
-          break;
-        } else if (object_array === null || line === object_array.length - 1) {
-          object_array = null;
-          resolve(-1);
-          break;
-        }
-      }
-    });
-  }
-  
+    }
+  });
+}

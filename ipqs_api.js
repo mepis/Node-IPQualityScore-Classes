@@ -1,15 +1,5 @@
 const AXIOS = require("./axios");
 
-class response_messages {
-  constructor() {}
-  error(message) {
-    return { success: false, message: message };
-  }
-  success(message, data) {
-    return { success: true, message: message, data: data };
-  }
-}
-
 class ipqs extends response_messages {
   static IPQS_BASE_URL = "https://www.ipqualityscore.com/api/json/";
   api_key = "";
@@ -43,10 +33,9 @@ class ipqs extends response_messages {
     // accepts an array of objects, primary field is ip, additional data will be appended to repsonse
     // eg. { ip: 192.168.1.1, user: qyser, email: test@test.com}
     return new Promise(async (resolve, reject) => {
-      if (!this.is_api_key_valid(this.api_key))
-        reject(this.error("Invalid API Key"));
+      if (!this.is_api_key_valid(this.api_key)) reject("Invalid API Key");
       if (this.response_type === "json" || this.response_type === "xml")
-        reject(this.error("Response format not set"));
+        reject("Response format not set");
       try {
         const IPQS_DATA = await ip_data.map((ip) => {
           const IPQS_IP_DATA = new Promise(async (resolve, reject) => {
@@ -57,7 +46,7 @@ class ipqs extends response_messages {
           });
           return IPQS_IP_DATA;
         });
-        resolve(this.success("IP data", IPQS_DATA));
+        resolve(("IP data", IPQS_DATA));
       } catch (error) {
         reject("Error calling API");
       }
